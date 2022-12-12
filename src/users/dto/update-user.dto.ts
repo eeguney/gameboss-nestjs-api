@@ -1,11 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger/dist/decorators";
-import { MinLength, MaxLength } from "class-validator";
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { CreateUserDto } from './create-user.dto';
+import { PartialType } from '@nestjs/swagger';
 
-export class UpdateUserDto {
+export class UpdateUserDto extends PartialType(CreateUserDto) {
 
-    @ApiProperty()
-    @MinLength(2)
-    @MaxLength(30)
-    fullname: string;
+    @ApiPropertyOptional({ required: false })
+    username?: string;
+
+    @ApiPropertyOptional({ required: false })
+    fullname?: string;
 
 }

@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger/dist/decorators";
-import { MinLength, IsEmail, MaxLength } from "class-validator";
-import { Exclude } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger/dist/decorators';
+import { MinLength, IsEmail, MaxLength, Validate } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 export class CreateUserDto {
     @ApiProperty()
@@ -17,9 +17,9 @@ export class CreateUserDto {
     @MaxLength(30)
     fullname: string;
 
-    @ApiProperty({ required: false })
-    @Exclude()
+    @ApiProperty()
     @MinLength(8)
-    @MaxLength(20)
+    @MaxLength(30)
+    @Exclude({ toPlainOnly: true })
     password: string;
 }

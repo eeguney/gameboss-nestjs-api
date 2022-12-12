@@ -1,11 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { MinLength, MaxLength, IsEmail } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import { Exclude } from 'class-transformer';
+import { Blog } from 'src/blogs/entity/blog.entity';
 
 @Entity('users')
 export class User {
-    
     @ApiProperty()
     @PrimaryGeneratedColumn()
     id: number;
@@ -13,12 +13,12 @@ export class User {
     @ApiProperty()
     @MinLength(3)
     @MaxLength(20)
-    @Column()
+    @Column({ unique: true })
     username: string;
 
     @ApiProperty()
     @IsEmail()
-    @Column()
+    @Column({ unique: true })
     email: string;
 
     @ApiProperty()
@@ -34,4 +34,6 @@ export class User {
     @Column()
     password: string;
 
+    @OneToMany(() => Blog, (blog) => blog.user)
+    blog: Blog[];
 }
