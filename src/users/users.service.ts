@@ -89,7 +89,7 @@ export class UsersService {
         return user;
     }
 
-    async updateUser(id: number, userData: UpdateUserDto): Promise<void> {
+    async updateUser(id: number, userData: UpdateUserDto): Promise<User> {
         const user = await this.usersRepository.findOneBy({ id });
         if (!user) {
             throw new NotFoundException(`User with id ${id} not found`);
@@ -101,6 +101,6 @@ export class UsersService {
             throw new BadRequestException('Invalid user data');
         }
 
-        await this.usersRepository.save(user);
+        return await this.usersRepository.save(user);
     }
 }

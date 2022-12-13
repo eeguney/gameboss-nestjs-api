@@ -68,7 +68,7 @@ export class BlogCategoryController {
     updateBlogCategoryWithId(
         @Param('id', ParseIntPipe) id: number,
         @Body() body: UpdateBlogCategoryDto,
-    ): Promise<void> {
+    ): Promise<BlogCategory> {
         return this.blogCategoryService.updateBlogCategory(id, body);
     }
 }

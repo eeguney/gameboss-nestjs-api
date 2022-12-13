@@ -1,26 +1,92 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
+import { Repository, FindManyOptions } from 'typeorm';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
+import { Tournament } from './entity/tournament.entity';
 
 @Injectable()
 export class TournamentsService {
-  create(createTournamentDto: CreateTournamentDto) {
-    return 'This action adds a new tournament';
-  }
+  constructor(
+    @InjectRepository(Tournament)
+    private readonly tournamentsRepository: Repository<Tournament>,
+) {}
 
-  findAll() {
-    return `This action returns all tournaments`;
-  }
+async findAll(
+    title?: string,
+    page?: number,
+    limit?: number,
+): Promise<Tournament[]> {
+    let tournaments: Tournament[];
+    const options: FindManyOptions = {};
+    if (title) {
+        options.where = {
+            title,
+        };
+    }
+    if (page && limit) {
+        options.skip = (page - 1) * limit;
+        options.take = limit;
+    }
+    if (title) {
+        const foundedTournaments = await this.tournamentsRepository.find(options);
+        if (foundedTournaments.length == 0) {
+            throw new NotFoundException(
+                'There is no tournament with that title...',
+            );
+        }
+        tournaments = foundedTournaments;
+    } else {
+        tournaments = await this.tournamentsRepository.find(options);
+    }
+    if (tournaments.length == 0) {
+        throw new NotFoundException('There is no tournaments...');
+    }
+    return tournaments.map((tournament) => plainToInstance(Tournament, tournament));
+}
 
-  findOne(id: number) {
-    return `This action returns a #${id} tournament`;
-  }
+async findById(tournamentId: number): Promise<Tournament> {
+    const tournament = await this.tournamentsRepository.findOne({
+        where: { id: tournamentId },
+    });
+    if (!tournament) {
+        throw new NotFoundException(`Tournament with id ${tournamentId} not found...`);
+    }
+    return tournament;
+}
 
-  update(id: number, updateTournamentDto: UpdateTournamentDto) {
-    return `This action updates a #${id} tournament`;
-  }
+async findByTitle(title: string): Promise<Tournament> {
+    const tournament = await this.tournamentsRepository.findOne({
+        where: { title },
+    });
+    if (!tournament) {
+        throw new NotFoundException(`Tournament with id ${title} not found...`);
+    }
+    return tournament;
+}
 
-  remove(id: number) {
-    return `This action removes a #${id} tournament`;
-  }
+async createTournament(tournamentData: CreateTournamentDto): Promise<Tournament> {
+    const errors = await validate(tournamentData);
+    if (errors.length > 0) {
+        throw new BadRequestException('Invalid tournament data');
+    }
+    return await this.tournamentsRepository.save(tournamentData);
+}
+
+async updateTournament(id: number, tournamentData: UpdateTournamentDto): Promise<Tournament> {
+    const tournament = await this.tournamentsRepository.findOneBy({ id });
+    if (!tournament) {
+        throw new NotFoundException(`Tournament with id ${id} not found`);
+    }
+
+    this.tournamentsRepository.merge(tournament, tournamentData);
+    const errors = await validate(tournament);
+    if (errors.length > 0) {
+        throw new BadRequestException('Invalid tournament data');
+    }
+
+    return await this.tournamentsRepository.save(tournament);
+}
 }

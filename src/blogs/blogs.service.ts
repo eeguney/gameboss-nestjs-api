@@ -79,7 +79,7 @@ export class BlogsService {
         return await this.blogsRepository.save(blogData);
     }
 
-    async updateBlog(id: number, blogData: UpdateBlogDto): Promise<void> {
+    async updateBlog(id: number, blogData: UpdateBlogDto): Promise<Blog> {
         const blog = await this.blogsRepository.findOneBy({ id });
         if (!blog) {
             throw new NotFoundException(`Blog with id ${id} not found`);
@@ -91,6 +91,6 @@ export class BlogsService {
             throw new BadRequestException('Invalid blog data');
         }
 
-        await this.blogsRepository.save(blog);
+        return await this.blogsRepository.save(blog);
     }
 }

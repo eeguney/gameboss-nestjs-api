@@ -10,4 +10,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     @ApiPropertyOptional({ required: false })
     fullname?: string;
 
+    @ApiPropertyOptional({ required: false })
+    profilePhoto?: string;
+
 }

@@ -22,6 +22,10 @@ export class User {
     email: string;
 
     @ApiProperty()
+    @Column({ default: '' })
+    profilePhoto: string;
+
+    @ApiProperty()
     @MinLength(2)
     @MaxLength(30)
     @Column()

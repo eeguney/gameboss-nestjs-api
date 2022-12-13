@@ -18,5 +18,8 @@ export class UpdateBlogDto extends PartialType(CreateBlogDto) {
     category?: BlogCategory;
 
     @ApiPropertyOptional()
+    thumbnail?: string;
+
+    @ApiPropertyOptional()
     user?: User;
 }
