@@ -23,7 +23,7 @@ import { UpdateBlogCategoryDto } from './dto/update-blog-category.dto';
 @ApiTags('Blog Categories')
 @Controller('blog-category')
 export class BlogCategoryController {
-    constructor(private readonly blogCategoryService: BlogCategoryService) {}
+    constructor(private blogCategoryService: BlogCategoryService) {}
 
     @ApiOkResponse({ type: BlogCategory, isArray: true })
     @ApiQuery({ name: 'title', required: false })
@@ -33,7 +33,7 @@ export class BlogCategoryController {
     getAll(
         @Query('title') title?: string,
         @Query('page') page: number = 1,
-        @Query('limit') limit: number = 10
+        @Query('limit') limit: number = 10,
     ): Promise<BlogCategory[]> {
         return this.blogCategoryService.findAll(title, page, limit);
     }
@@ -58,7 +58,9 @@ export class BlogCategoryController {
 
     @ApiCreatedResponse({ type: BlogCategory })
     @Post()
-    createBlogCategory(@Body() body: CreateBlogCategoryDto): Promise<BlogCategory> {
+    createBlogCategory(
+        @Body() body: CreateBlogCategoryDto,
+    ): Promise<BlogCategory> {
         return this.blogCategoryService.createBlogCategory(body);
     }
 

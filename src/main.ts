@@ -4,6 +4,9 @@ import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import * as session from "express-session";
+import * as passport from "passport";
+import CONFIG from './config/env.config';
 
 async function bootstrap() {
     // logger setup
@@ -11,9 +14,21 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     // cors and prefix
     app.enableCors()
-    app.setGlobalPrefix('v1/api')
+    app.setGlobalPrefix(CONFIG.GLOBAL_PREFIX)
     // validation setup
     app.useGlobalPipes(new ValidationPipe())
+    // passport
+    app.use(session({
+      secret: CONFIG.COOKIE_SECRET,
+      saveUninitialized: false,
+      resave: false,
+      cookie: {
+        maxAge: 60000
+      }
+    }))
+    app.use(passport.initialize());
+    app.use(passport.session())
+    
     // swagger configuration
     const config = new DocumentBuilder()
         .setTitle('GameBoss Rest API Documentation')
@@ -23,7 +38,7 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('/docs/v1', app, document);
     // listen app
-    const PORT = process.env.PORT || 8000;
+    const PORT = CONFIG.API_PORT || 8000;
     await app.listen(PORT).then(() => {
       logger.log(`Listening on port: ${PORT}`)
     });

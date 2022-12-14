@@ -15,7 +15,7 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 export class BlogsService {
     constructor(
         @InjectRepository(Blog)
-        private readonly blogsRepository: Repository<Blog>,
+        private blogsRepository: Repository<Blog>,
     ) {}
 
     async findAll(

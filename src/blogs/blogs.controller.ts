@@ -23,7 +23,7 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 @ApiTags('Blogs')
 @Controller('blogs')
 export class BlogsController {
-    constructor(private readonly blogsService: BlogsService) {}
+    constructor(private blogsService: BlogsService) {}
 
     @ApiOkResponse({ type: Blog, isArray: true })
     @ApiQuery({ name: 'title', required: false })

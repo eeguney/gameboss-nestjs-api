@@ -11,11 +11,16 @@ import { validate } from 'class-validator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { plainToInstance } from 'class-transformer';
 
+type UserDetails = {
+    email: string;
+    displayName: string;
+};
+
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User)
-        private readonly usersRepository: Repository<User>,
+        private usersRepository: Repository<User>,
     ) {}
 
     async findAll(
@@ -61,15 +66,15 @@ export class UsersService {
         return user;
     }
 
-    async findbyEmailOrUsername(username: string) {
+    async findbyEmailOrUsername(displayName: string) {
         const user = await this.usersRepository
             .createQueryBuilder('users')
-            .where('users.username = :username', { username })
-            .orWhere('users.email = :username', { username })
+            .where('users.displayName = :displayName', { displayName })
+            .orWhere('users.email = :displayName', { displayName })
             .getOne();
         if (!user) {
             throw new NotFoundException(
-                `User with username or email ${username} not found...`,
+                `User with username or email ${displayName} not found...`,
             );
         }
         return user;
@@ -77,7 +82,7 @@ export class UsersService {
 
     async createUser(userData: CreateUserDto): Promise<User> {
         const user = new User();
-        user.username = userData.username;
+        user.displayName = userData.displayName;
         user.fullname = userData.fullname;
         user.email = userData.email;
         user.password = userData.password;

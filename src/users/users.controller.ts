@@ -24,7 +24,7 @@ import { UsersService } from './users.service';
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(private usersService: UsersService) {}
 
     @ApiOkResponse({ type: User, isArray: true })
     @ApiQuery({ name: 'username', required: false })
