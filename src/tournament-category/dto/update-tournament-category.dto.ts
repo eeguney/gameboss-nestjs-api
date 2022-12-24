@@ -9,5 +9,8 @@ export class UpdateTournamentCategoryDto extends PartialType(CreateTournamentCat
     slug?: string;
 
     @ApiPropertyOptional()
+    thumbnail?: string;
+
+    @ApiPropertyOptional()
     info?: string;
 }

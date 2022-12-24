@@ -47,6 +47,13 @@ export class UsersController {
     }
 
     @ApiOkResponse()
+    @ApiInternalServerErrorResponse()
+    @Post('/login')
+    login(@Body() body: CreateUserDto): Promise<void> {
+        return this.usersService.createOrLogin(body);
+    }
+
+    @ApiOkResponse()
     @ApiNotFoundResponse()
     @Get('/username/:username')
     getUserByEmailOrUsername(

@@ -6,6 +6,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+import { Player } from 'src/players/entity/player.entity';
+import { Team } from 'src/teams/entity/team.entity';
 import { Repository, FindManyOptions } from 'typeorm';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
@@ -22,9 +24,18 @@ export class TournamentsService {
         title?: string,
         page?: number,
         limit?: number,
+        teams?: boolean,
+        players?: boolean,
     ): Promise<Tournament[]> {
         let tournaments: Tournament[];
         const options: FindManyOptions = {};
+        options.relations = [];
+        if (teams) {
+            options.relations.push('teams')
+        }
+        if (players) {
+            options.relations.push('players')
+        }
         if (title) {
             options.where = {
                 title,
@@ -65,6 +76,32 @@ export class TournamentsService {
             );
         }
         return tournament;
+    }
+
+    async getAllPlayers(tournamentId: number): Promise<Player[]> {
+        const thatTournament = await this.tournamentsRepository.findOne({
+            where: { id: tournamentId },
+             relations: {
+                players: true
+            }
+        });
+        if (!thatTournament) {
+            throw new NotFoundException(`Players with id ${tournamentId} not found...`);
+        }
+        return thatTournament.players;
+    }
+
+    async getAllTeams(tournamentId: number): Promise<Team[]> {
+        const thatTournament = await this.tournamentsRepository.findOne({
+            where: { id: tournamentId },
+            relations: {
+                teams: true
+            }
+        });
+        if (!thatTournament) {
+            throw new NotFoundException(`Teams with id ${tournamentId} not found...`);
+        }
+        return thatTournament.teams;
     }
 
     async findByTitle(title: string): Promise<Tournament> {

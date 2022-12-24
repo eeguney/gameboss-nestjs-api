@@ -14,5 +14,8 @@ export class CreateTournamentCategoryDto {
     slug: string;
 
     @ApiProperty()
+    thumbnail: string;
+
+    @ApiProperty()
     info: string;
 }

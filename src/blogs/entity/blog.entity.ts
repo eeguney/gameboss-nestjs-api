@@ -32,7 +32,7 @@ export class Blog {
 
     @ApiProperty()
     @MinLength(10)
-    @Column()
+    @Column({ type: "longtext" })
     text: string;
 
     @ApiProperty({ type: Number })

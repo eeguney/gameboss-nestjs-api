@@ -13,7 +13,9 @@ async function bootstrap() {
     const logger = new Logger('bootstrap');
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     // cors and prefix
-    app.enableCors()
+    app.enableCors({
+      origin: '*'
+    })
     app.setGlobalPrefix(CONFIG.GLOBAL_PREFIX)
     // validation setup
     app.useGlobalPipes(new ValidationPipe())

@@ -56,6 +56,16 @@ export class UsersService {
         return users.map((user) => plainToInstance(User, user));
     }
 
+    async createOrLogin(user: CreateUserDto): Promise<void> {
+        const theUser = await this.usersRepository.findOne({
+            where: { id: user.id },
+        });
+        if (!theUser) {
+            console.log("user yok yeni oluşturulacak")
+            this.createUser(user);
+        }
+    }
+
     async findById(userId: number): Promise<User> {
         const user = await this.usersRepository.findOne({
             where: { id: userId },
@@ -82,8 +92,9 @@ export class UsersService {
 
     async createUser(userData: CreateUserDto): Promise<User> {
         const user = new User();
-        user.displayName = userData.displayName;
-        user.fullname = userData.fullname;
+        user.name = userData.name;
+        user.picture = userData.picture;
+        user.googleId = userData.id;
         user.email = userData.email;
         user.password = userData.password;
         const errors = await validate(user);

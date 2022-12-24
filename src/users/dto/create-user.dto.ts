@@ -6,19 +6,20 @@ export class CreateUserDto {
     @ApiProperty()
     @MinLength(3)
     @MaxLength(20)
-    displayName: string;
+    name: string;
+
+    @ApiPropertyOptional()
+    id?: number;
 
     @ApiProperty()
     @IsEmail()
     email: string;
 
     @ApiPropertyOptional()
-    @MaxLength(30)
-    fullname?: string;
+    picture?: string;
+
 
     @ApiPropertyOptional()
-    @MinLength(8)
-    @MaxLength(30)
     @Exclude({ toPlainOnly: true })
     password?: string;
 }

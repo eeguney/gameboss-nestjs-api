@@ -8,9 +8,15 @@ import { TournamentsModule } from './tournaments/tournaments.module';
 import { TournamentCategoryModule } from './tournament-category/tournament-category.module';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import { ConfigModule } from '@nestjs/config';
+import { PlayersModule } from './players/players.module';
+import { TeamsModule } from './teams/teams.module';
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
         AuthModule,
         TypeOrmModule.forRoot(TYPEORMCONFIG),
         UsersModule,
@@ -18,6 +24,8 @@ import { PassportModule } from '@nestjs/passport';
         BlogCategoryModule,
         TournamentsModule,
         TournamentCategoryModule,
+        PlayersModule,
+        TeamsModule,
         PassportModule.register({ session: true })
     ],
 })

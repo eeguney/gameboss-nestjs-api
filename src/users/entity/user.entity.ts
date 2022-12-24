@@ -11,10 +11,13 @@ export class User {
     id: number;
 
     @ApiProperty()
+    googleId?: number;
+
+    @ApiProperty()
     @MinLength(3)
-    @MaxLength(20)
-    @Column({ unique: true })
-    displayName: string;
+    @MaxLength(40)
+    @Column()
+    name: string;
 
     @ApiProperty()
     @IsEmail()
@@ -23,16 +26,9 @@ export class User {
 
     @ApiPropertyOptional()
     @Column({ default: '', nullable: true })
-    profilePhoto?: string;
+    picture?: string;
 
     @ApiPropertyOptional()
-    @MaxLength(30)
-    @Column({ nullable: true })
-    fullname?: string;
-
-    @ApiPropertyOptional()
-    @MinLength(8)
-    @MaxLength(30)
     @Exclude()
     @Column({ nullable: true })
     password?: string;

@@ -21,6 +21,10 @@ export class TournamentCategory {
 
     @ApiProperty()
     @Column({ nullable: true })
+    thumbnail: string;
+
+    @ApiProperty()
+    @Column({ nullable: true })
     info: string;
 
     @OneToMany(() => Tournament, (tournament) => tournament.category)
