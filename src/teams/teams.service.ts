@@ -115,7 +115,7 @@ export class TeamsService {
 
     async addTeamToTournament(
         teamId: number,
-        tournamentId: number,
+        tournamentId: string,
     ): Promise<Tournament> {
         const thatTeam = await this.teamsRepository.findOne({
             where: { id: teamId },

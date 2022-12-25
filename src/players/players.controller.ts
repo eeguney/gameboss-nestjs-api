@@ -67,7 +67,7 @@ export class PlayersController {
     @ApiQuery({ name: 'playerId', required: false })
     @ApiQuery({ name: 'tournamentId', required: false })
     @Post('player-to-tournament')
-    addPlayerToTournament(@Param('playerId') playerId?: number, @Param('tournamentId') tournamentId?: number): Promise<Tournament> {
+    addPlayerToTournament(@Param('playerId') playerId?: number, @Param('tournamentId') tournamentId?: string): Promise<Tournament> {
         return this.playerService.addPlayerToTournament(playerId, tournamentId);
     }
 

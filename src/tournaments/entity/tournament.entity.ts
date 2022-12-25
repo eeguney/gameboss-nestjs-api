@@ -5,13 +5,14 @@ import { Player } from "src/players/entity/player.entity";
 import { Team } from "src/teams/entity/team.entity";
 import { TournamentCategory } from "src/tournament-category/entity/tournament-category.entity";
 import { User } from "src/users/entity/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import shortid from "shortid";
 
 @Entity('tournaments')
 export class Tournament {
     @ApiProperty()
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @ApiProperty()
     @MinLength(10)

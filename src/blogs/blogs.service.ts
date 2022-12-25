@@ -51,7 +51,7 @@ export class BlogsService {
         return blogs.map((blog) => plainToInstance(Blog, blog));
     }
 
-    async findById(blogId: number): Promise<Blog> {
+    async findById(blogId: string): Promise<Blog> {
         const blog = await this.blogsRepository.findOne({
             where: { id: blogId },
         });
@@ -79,7 +79,7 @@ export class BlogsService {
         return await this.blogsRepository.save(blogData);
     }
 
-    async updateBlog(id: number, blogData: UpdateBlogDto): Promise<Blog> {
+    async updateBlog(id: string, blogData: UpdateBlogDto): Promise<Blog> {
         const blog = await this.blogsRepository.findOneBy({ id });
         if (!blog) {
             throw new NotFoundException(`Blog with id ${id} not found`);

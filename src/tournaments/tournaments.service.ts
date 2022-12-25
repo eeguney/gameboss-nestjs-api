@@ -66,7 +66,7 @@ export class TournamentsService {
         );
     }
 
-    async findById(tournamentId: number): Promise<Tournament> {
+    async findById(tournamentId: string): Promise<Tournament> {
         const tournament = await this.tournamentsRepository.findOne({
             where: { id: tournamentId },
         });
@@ -78,7 +78,7 @@ export class TournamentsService {
         return tournament;
     }
 
-    async getAllPlayers(tournamentId: number): Promise<Player[]> {
+    async getAllPlayers(tournamentId: string): Promise<Player[]> {
         const thatTournament = await this.tournamentsRepository.findOne({
             where: { id: tournamentId },
              relations: {
@@ -91,7 +91,7 @@ export class TournamentsService {
         return thatTournament.players;
     }
 
-    async getAllTeams(tournamentId: number): Promise<Team[]> {
+    async getAllTeams(tournamentId: string): Promise<Team[]> {
         const thatTournament = await this.tournamentsRepository.findOne({
             where: { id: tournamentId },
             relations: {
@@ -127,7 +127,7 @@ export class TournamentsService {
     }
 
     async updateTournament(
-        id: number,
+        id: string,
         tournamentData: UpdateTournamentDto,
     ): Promise<Tournament> {
         const tournament = await this.tournamentsRepository.findOneBy({ id });

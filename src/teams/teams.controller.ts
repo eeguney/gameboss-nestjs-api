@@ -67,7 +67,7 @@ export class TeamsController {
     @ApiQuery({ name: 'teamId', required: false })
     @ApiQuery({ name: 'tournamentId', required: false })
     @Post('/team-to-tournament')
-    addTeamToTournament(@Query('teamId') teamId?: number, @Query('tournamentId') tournamentId?: number): Promise<Tournament> {
+    addTeamToTournament(@Query('teamId') teamId?: number, @Query('tournamentId') tournamentId?: string): Promise<Tournament> {
         return this.teamService.addTeamToTournament(teamId, tournamentId);
     }
 

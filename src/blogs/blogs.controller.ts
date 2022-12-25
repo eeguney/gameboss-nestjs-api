@@ -41,7 +41,7 @@ export class BlogsController {
     @ApiOkResponse()
     @ApiNotFoundResponse()
     @Get(':id')
-    getBlogById(@Param('id', ParseIntPipe) id: number): Promise<Blog> {
+    getBlogById(@Param('id') id: string): Promise<Blog> {
         return this.blogsService.findById(id);
     }
 
@@ -62,7 +62,7 @@ export class BlogsController {
     @ApiNotFoundResponse()
     @Patch('/:id')
     updateBlogWithId(
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id') id: string,
         @Body() body: UpdateBlogDto,
     ): Promise<Blog> {
         return this.blogsService.updateBlog(id, body);

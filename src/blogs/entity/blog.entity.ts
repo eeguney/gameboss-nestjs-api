@@ -1,20 +1,15 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    RelationId,
-    ManyToOne,
-} from 'typeorm';
+import { Entity, Column, RelationId, ManyToOne, PrimaryColumn, BeforeInsert, PrimaryGeneratedColumn } from 'typeorm';
 import { MinLength, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import { User } from 'src/users/entity/user.entity';
 import { BlogCategory } from 'src/blog-category/entity/blog-category.entity';
+import shortid from 'shortid';
 
 @Entity('blogs')
 export class Blog {
     @ApiProperty()
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @ApiProperty()
     @MinLength(10)
@@ -32,7 +27,7 @@ export class Blog {
 
     @ApiProperty()
     @MinLength(10)
-    @Column({ type: "longtext" })
+    @Column({ type: 'longtext' })
     text: string;
 
     @ApiProperty({ type: Number })
@@ -48,4 +43,5 @@ export class Blog {
 
     @RelationId((post: Blog) => post.user)
     userId: number;
+
 }

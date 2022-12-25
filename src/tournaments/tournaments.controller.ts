@@ -49,7 +49,7 @@ export class TournamentsController {
     @ApiNotFoundResponse()
     @Get(':id')
     getTournamentById(
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id') id: string,
     ): Promise<Tournament> {
         return this.tournamentsService.findById(id);
     }
@@ -58,7 +58,7 @@ export class TournamentsController {
     @ApiOkResponse()
     @ApiNotFoundResponse()
     @Get('/players/:tournamentId')
-    getAllPlayers(@Param('tournamentId', ParseIntPipe) tournamentId?: number): Promise<Player[]> {
+    getAllPlayers(@Param('tournamentId') tournamentId?: string): Promise<Player[]> {
         return this.tournamentsService.getAllPlayers(tournamentId);
     }
 
@@ -66,7 +66,7 @@ export class TournamentsController {
     @ApiOkResponse()
     @ApiNotFoundResponse()
     @Get('/teams/:tournamentId')
-    getAllTeams(@Param('tournamentId', ParseIntPipe) tournamentId?: number): Promise<Team[]> {
+    getAllTeams(@Param('tournamentId') tournamentId?: string): Promise<Team[]> {
         return this.tournamentsService.getAllTeams(tournamentId);
     }
 
@@ -87,7 +87,7 @@ export class TournamentsController {
     @ApiNotFoundResponse()
     @Patch('/:id')
     updateTournamentWithId(
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id') id: string,
         @Body() body: UpdateTournamentDto,
     ): Promise<Tournament> {
         return this.tournamentsService.updateTournament(id, body);

@@ -119,7 +119,7 @@ export class PlayersService {
         return await this.teamsRepository.save(thatTeam);
     }
 
-    async addPlayerToTournament(playerId: number, tournamentId: number): Promise<Tournament> {
+    async addPlayerToTournament(playerId: number, tournamentId: string): Promise<Tournament> {
         const thatPlayer = await this.playersRepository.findOne({
             where: { id: playerId },
         });
